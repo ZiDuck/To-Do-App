@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "passWord" SET DATA TYPE VARCHAR(100);
