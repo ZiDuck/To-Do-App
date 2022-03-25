@@ -1,8 +1,8 @@
-import express, { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-import dotenv from "dotenv";
-import route from './routes';
+import express, { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import route from './routes';
 
 dotenv.config();
 
@@ -18,5 +18,5 @@ route(app);
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-    console.log(`Server running at port ${PORT}`);
+  console.log(`Server running at port ${PORT}`);
 });
