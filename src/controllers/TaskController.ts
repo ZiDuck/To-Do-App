@@ -15,9 +15,7 @@ class TaskController {
 
   async store(req: Request, res: Response) {
     try {
-      const {
-        nameTask, collectionId, deadline, description,
-      } = req.body;
+      const { nameTask, collectionId, deadline, description } = req.body;
       const task = await prisma.task.create({
         data: {
           nameTask,

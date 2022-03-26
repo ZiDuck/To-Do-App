@@ -56,17 +56,17 @@ class AuthController {
     // get refreshToken
     const { refreshToken } = req.cookies;
     if (!refreshToken) return res.status(401).json("You're not authenticated");
-     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, user: any) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, user: any) => {
       if (err) return res.status(401).json();
-        const tokens = jwtTokens(user.id, user.email, user.name);
-                    res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true })
-        return res.status(200).json({ accessToken: tokens.accessToken });
+      const tokens = jwtTokens(user.id, user.email, user.name);
+      res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+      return res.status(200).json({ accessToken: tokens.accessToken });
     });
   }
 
   async logout(req: Request, res: Response) {
-    res.clearCookie('refreshToken')
-    res.status(200).json('Loggout successfully!')
+    res.clearCookie('refreshToken');
+    res.status(200).json('Loggout successfully!');
   }
 }
 
