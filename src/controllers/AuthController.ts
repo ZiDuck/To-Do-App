@@ -18,7 +18,7 @@ class AuthController {
           name,
         },
       });
-      res.status(200).json(user);
+      res.status(200).json({ message: 'Register Successfully' });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -44,11 +44,11 @@ class AuthController {
       }
 
       // JWT
-      const tokens = jwtTokens(user.id, user.email, user.name);
+      const tokens = jwtTokens({ id: user.id, email: user.email, name: user.name });
       res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
-      res.json(tokens);
+      return res.json(tokens);
     } catch (error) {
-      res.status(401).json({ error });
+      return res.status(401).json({ error });
     }
   }
 
@@ -58,7 +58,7 @@ class AuthController {
     if (!refreshToken) return res.status(401).json("You're not authenticated");
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, (err: any, user: any) => {
       if (err) return res.status(401).json();
-      const tokens = jwtTokens(user.id, user.email, user.name);
+      const tokens = jwtTokens({ id: user.id, email: user.email, name: user.name });
       res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
       return res.status(200).json({ accessToken: tokens.accessToken });
     });

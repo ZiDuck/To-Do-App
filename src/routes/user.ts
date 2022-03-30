@@ -4,18 +4,16 @@ import verifyTokenMiddleware from '../middleware/middleware';
 
 const route = express.Router();
 
-// [GET] users/
-route.get('/', verifyTokenMiddleware.verifyToken, UserController.showAll);
+// [GET] users/me
+route.get('/me', verifyTokenMiddleware.verifyToken, UserController.showUnique);
 
-// [GET] users/:id
-route.get('/:id', verifyTokenMiddleware.verifyToken, UserController.showUnique);
+// [PUT] users/me
+route.put('/me', verifyTokenMiddleware.verifyToken, UserController.update);
 
-// [PATCH] users/:id
-route.patch('/:id/name', verifyTokenMiddleware.verifyToken, UserController.updateNameUser);
-route.patch('/:id/email', verifyTokenMiddleware.verifyToken, UserController.updateEmail);
-route.patch('/:id/password', verifyTokenMiddleware.verifyToken, UserController.updatePassword);
+// [GET] users/me/collections/
+route.get('/me/collections/', verifyTokenMiddleware.verifyToken, UserController.getAllCollectionByCurrentUser);
 
-// [DELETE] users/:id
-route.delete('/:id', verifyTokenMiddleware.verifyToken, UserController.delete);
+// [DELETE] users/me
+route.delete('/me', verifyTokenMiddleware.verifyToken, UserController.delete);
 
 export default route;

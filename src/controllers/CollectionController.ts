@@ -1,43 +1,43 @@
 import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import deleteCollection from '../utils/deleteCollection';
 
 const prisma = new PrismaClient();
 
 class CollectionController {
   async showAll(req: Request, res: Response) {
     try {
-      const collection = await prisma.collection.findMany({
+      const collections = await prisma.collection.findMany({
         include: {
           tasks: true,
         },
       });
-      res.status(200).json(collection);
+      return res.status(200).json(collections);
     } catch (error) {
-      res.status(500).json({ error });
+      return res.status(500).json({ error });
     }
   }
 
   async store(req: Request, res: Response) {
+    const userId = req.user.id;
     try {
-      const { nameCollection, userId } = req.body;
+      const { nameCollection } = req.body;
       const collection = await prisma.collection.create({
         data: {
           nameCollection,
           userId,
         },
       });
-      res.status(200).json(collection);
+      return res.status(200).json(collection);
     } catch (error) {
-      res.status(500).json({ error });
+      return res.status(500).json({ error });
     }
   }
 
   async update(req: Request, res: Response) {
     try {
       const collectionId = +req.params.id;
-
       const { nameCollection } = req.body;
+
       const collection = await prisma.collection.update({
         where: {
           id: collectionId,
@@ -46,15 +46,60 @@ class CollectionController {
           nameCollection,
         },
       });
-      res.status(200).json(collection);
+      return res.status(200).json(collection);
     } catch (error) {
-      res.status(500).json({ error });
+      return res.status(500).json({ error });
     }
   }
 
-  delete(req: Request, res: Response) {
-    const collectionId = +req.params.id;
-    deleteCollection(collectionId, req, res);
+  async delete(req: Request, res: Response) {
+    try {
+      const collectionId = +req.params.id;
+
+      const deletedCollection = await prisma.collection.delete({
+        where: {
+          id: collectionId,
+        },
+      });
+
+      return res.status(200).json({
+        message: 'Delete Successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
+
+  async getAllTasksOfCollection(req: Request, res: Response) {
+    try {
+      const collectionId = +req.params.id;
+      const tasks = await prisma.task.findMany({
+        where: {
+          collectionId: collectionId,
+        },
+      });
+      return res.status(200).json(tasks);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
+
+  async storeTaskOfCollection(req: Request, res: Response) {
+    try {
+      const collectionId = +req.params.id;
+      const { nameTask, deadline, description } = req.body;
+      const task = await prisma.task.create({
+        data: {
+          nameTask,
+          collectionId,
+          deadline,
+          description,
+        },
+      });
+      return res.status(200).json(task);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
   }
 }
 

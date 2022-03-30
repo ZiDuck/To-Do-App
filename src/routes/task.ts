@@ -11,7 +11,7 @@ route.get('/', verifyTokenMiddleware.verifyToken, TaskController.showAll);
 route.post('/store', verifyTokenMiddleware.verifyToken, TaskController.store);
 
 // [PUT] tasks/:id
-route.post('/:id', verifyTokenMiddleware.verifyToken, TaskController.update);
+route.put('/:id', verifyTokenMiddleware.verifyToken, TaskController.update);
 
 // [DELETE] tasks/:id
 route.delete('/:id', verifyTokenMiddleware.verifyToken, TaskController.delete);
