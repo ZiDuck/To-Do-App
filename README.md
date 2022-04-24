@@ -7,7 +7,7 @@
 npm install
 
 # create file .env and add content below
-DATABASE_URL="postgresql://postgres:duyduyduc18102001@localhost:5432/ToDoApp?schema=public"
+DATABASE_URL="postgresql://postgres:(your_postgre_password)@localhost:5432/ToDoApp?schema=public"
 
 PORT=5000
 
